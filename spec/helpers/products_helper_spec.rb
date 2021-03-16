@@ -13,7 +13,7 @@ RSpec.describe Spree::ProductsHelper do
       # Normally provided by Spree::Core::ControllerHelpers::Search
       def build_searcher(params)
         Spree::Config.searcher_class.new(params).tap do |searcher|
-          searcher.current_user = FactoryGirl.create(:user)
+          searcher.current_user = FactoryBot.create(:user)
           searcher.pricing_options = current_pricing_options
         end
       end
@@ -28,7 +28,7 @@ RSpec.describe Spree::ProductsHelper do
     end
 
     let(:products) do
-      travel_to(Time.local(1990)) do
+      travel_to(Time.utc(1990)) do
         create_list(:product, 2)
       end
     end
@@ -52,7 +52,7 @@ RSpec.describe Spree::ProductsHelper do
         products.first.update(updated_at: Time.local(1992))
       end
 
-      it { is_expected.to eq('en/USD/spree/products/all--bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f-19920101000000-2') }
+      it { is_expected.to eq('en/USD/spree/products/all--bf21a9e8fbc5a3846fb05b4fa0859e0917b2202f-19900101000000-2') }
     end
 
     context 'when no products are found' do
